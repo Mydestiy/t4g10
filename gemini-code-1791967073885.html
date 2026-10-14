@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Test 2 (40 Câu Hiển Thị Trực Tiếp) - Ms Lê Hằng English</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary-purple: #8854C0;
+      --primary-pink: #FD79A8;
+      --primary-yellow: #FDCB6E;
+      --primary-teal: #00C9A7;
+      --primary-blue: #0984E3;
+      --correct-green: #00D26A;
+      --correct-green-shadow: #00a352;
+      --wrong-red: #FF4757;
+      --wrong-red-shadow: #d63031;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --text-main: #2D3436;
+      --text-muted: #636E72;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', 'Quicksand', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text-main);
+      background: linear-gradient(180deg, #bbf2f6 0%, #d8e8f8 25%, #fedacb 60%, #fed1c0 85%, #fca289 100%);
+      position: relative;
+      overflow-x: hidden;
+      padding: 16px 12px 140px;
+    }
+
+    .sky-decorations {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sun-glow {
+      position: absolute;
+      top: 25px;
+      left: -20px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, #ffeaa7 40%, rgba(255, 234, 167, 0.4) 70%, transparent 100%);
+      border-radius: 50%;
+      filter: blur(10px);
+      animation: pulseSun 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseSun {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .floating-cloud {
+      position: absolute;
+      fill: rgba(255, 255, 255, 0.75);
+      animation: floatCloud linear infinite;
+    }
+
+    .cloud-1 { top: 60px; left: -120px; width: 140px; animation-duration: 48s; }
+    .cloud-2 { top: 180px; left: -160px; width: 180px; animation-duration: 65s; animation-delay: -25s; }
+
+    @keyframes floatCloud {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(100vw + 250px)); }
+    }
+
+    .city-backdrop {
+      position: fixed;
+      bottom: 42px;
+      left: 0;
+      width: 100%;
+      height: 150px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+      background-repeat: repeat-x;
+      background-position: bottom center;
+      background-size: 550px 140px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 550 140'%3E%3Cpath fill='%23a5cbf5' d='M0,140 L0,70 L30,70 L30,50 L45,50 L45,30 L60,30 L60,70 L90,70 L90,140 Z M100,140 L100,40 L140,40 L140,140 Z M150,140 L150,65 L180,65 L180,140 Z M190,140 L190,20 L230,20 L230,140 Z M240,140 L240,55 L280,55 L280,140 Z M290,140 L290,35 L330,35 L330,140 Z M340,140 L340,75 L380,75 L380,140 Z M390,140 L390,15 L430,15 L430,140 Z M440,140 L440,60 L490,60 L490,140 Z M500,140 L500,45 L540,45 L540,140 Z'/%3E%3C/svg%3E");
+    }
+
+    .bottom-road {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 44px;
+      background: #4b4b4b;
+      border-top: 5px solid #2ed573;
+      z-index: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      overflow: hidden;
+    }
+
+    .road-curb {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, #ff4757, #ff4757 25px, #ffffff 25px, #ffffff 50px);
+    }
+
+    .road-line {
+      height: 6px;
+      width: 45px;
+      background: #ffffff;
+      border-radius: 3px;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .top-sticky-bar {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 10px 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      border: 2px solid #ffffff;
+      margin-bottom: 14px;
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+    }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .star-score-pill {
+      background: linear-gradient(135deg, #ff7675, #e84393);
+      color: white;
+      font-weight: 900;
+      font-size: 0.88rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 3px 0 #d63031;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 14px;
+      background: #E2E8F0;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00C9A7, #00D26A);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-count-pill {
+      background: #00C9A7;
+      color: white;
+      font-weight: 900;
+      font-size: 0.88rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      box-shadow: 0 3px 0 #008770;
+      white-space: nowrap;
+    }
+
+    .teacher-contact-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #2D3436;
+      padding-top: 4px;
+      border-top: 1px dashed #E2E8F0;
+    }
+
+    .teacher-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      color: #6C5CE7;
+    }
+
+    .phone-tag {
+      background: #FF7675;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    .unit-hero-card {
+      background: #FFFFFF;
+      border-radius: 28px;
+      padding: 22px 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      border: 3px solid #FFFFFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      max-width: 72%;
+    }
+
+    .unit-badge {
+      display: inline-block;
+      background: #00B894;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      margin-bottom: 10px;
+      box-shadow: 0 3px 0 #008770;
+    }
+
+    .hero-title {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #0984E3;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #636E72;
+      line-height: 1.5;
+    }
+
+    .hero-graphic {
+      width: 105px;
+      height: 105px;
+      background: radial-gradient(circle, #E1F0FF 60%, #CCE5FF 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 15px rgba(9, 132, 227, 0.15);
+      position: relative;
+    }
+
+    .hero-graphic svg {
+      width: 70px;
+      height: 70px;
+    }
+
+    .warning-box {
+      background: linear-gradient(135deg, #FFF9E6, #FFF0C2);
+      border: 3px solid #FDCB6E;
+      border-radius: 22px;
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(253, 203, 110, 0.35);
+      position: relative;
+    }
+
+    .warning-title {
+      font-size: 1.08rem;
+      font-weight: 900;
+      color: #D35400;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .warning-text {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      font-weight: 700;
+      color: #7A4100;
+    }
+
+    .warning-tag {
+      display: inline-block;
+      margin-top: 8px;
+      background: #E17055;
+      color: white;
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
+    }
+
+    .exercise-divider {
+      background: linear-gradient(135deg, #6C5CE7, #8854C0);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 18px;
+      margin: 28px 0 16px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      box-shadow: 0 6px 0 #4834D4;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .question-card {
+      background: var(--card-bg);
+      border-radius: 26px;
+      padding: 22px 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+      border: 3px solid #FFFFFF;
+      transition: transform 0.2s ease;
+      position: relative;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .question-num {
+      background: linear-gradient(135deg, #6c5ce7, #8854C0);
+      color: white;
+      font-size: 0.95rem;
+      font-weight: 900;
+      padding: 5px 16px;
+      border-radius: 14px;
+      box-shadow: 0 3px 0 #4834d4;
+    }
+
+    .question-type-badge {
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 12px;
+      background: #E8F8F5;
+      color: #00A884;
+      border: 1.5px solid #00C9A7;
+    }
+
+    .question-content {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #2D3436;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .passage-box {
+      background: #F8F9FE;
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      font-size: 1.04rem;
+      line-height: 1.7;
+      color: #2D3436;
+      font-weight: 600;
+    }
+
+    .passage-title {
+      text-align: center;
+      font-weight: 900;
+      font-size: 1.18rem;
+      color: #0984E3;
+      margin-bottom: 12px;
+      border-bottom: 2px dashed #CBD5E1;
+      padding-bottom: 8px;
+    }
+
+    .phonetic-u, u {
+      color: #D63031 !important;
+      text-decoration: underline !important;
+      text-decoration-thickness: 3px !important;
+      text-underline-offset: 4px !important;
+      font-weight: 900;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 600px) {
+      .options-grid.two-cols {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      background: #FFFFFF;
+      border: 2.5px solid #E2E8F0;
+      border-radius: 18px;
+      padding: 12px 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #2D3436;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.15s ease;
+      box-shadow: 0 5px 0 #CBD5E1;
+      position: relative;
+      outline: none;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      border-color: #A29BFE;
+      box-shadow: 0 7px 0 #a29bfe;
+      background: #FDFBFF;
+    }
+
+    .option-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #CBD5E1;
+    }
+
+    .option-key {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
+      background: #F1F2F6;
+      color: #6C5CE7;
+      border-radius: 10px;
+      margin-right: 12px;
+      font-weight: 900;
+      font-size: 0.95rem;
+      border: 1.5px solid #DFE4EA;
+    }
+
+    .option-btn.correct {
+      background: #E8FBF0 !important;
+      border-color: var(--correct-green) !important;
+      color: #056636 !important;
+      box-shadow: 0 5px 0 var(--correct-green-shadow) !important;
+    }
+
+    .option-btn.correct .option-key {
+      background: var(--correct-green);
+      color: white;
+      border-color: var(--correct-green-shadow);
+    }
+
+    .option-btn.wrong {
+      background: #FFF0F2 !important;
+      border-color: var(--wrong-red) !important;
+      color: #A31221 !important;
+      box-shadow: 0 5px 0 var(--wrong-red-shadow) !important;
+      animation: shake 0.45s ease-in-out;
+    }
+
+    .option-btn.wrong .option-key {
+      background: var(--wrong-red);
+      color: white;
+      border-color: var(--wrong-red-shadow);
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .explanation-box {
+      margin-top: 20px;
+      background: #FFFFFF;
+      border: 2px dashed #A29BFE;
+      border-radius: 22px;
+      padding: 18px 20px;
+      display: none;
+      animation: slideDown 0.35s ease-out;
+      box-shadow: 0 8px 24px rgba(108, 92, 231, 0.08);
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .exp-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #E65100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .exp-translation-bubble {
+      background: #FFF9E6;
+      border-left: 5px solid #FDCB6E;
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #2D3436;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .exp-section-title {
+      font-size: 0.98rem;
+      font-weight: 900;
+      color: #2D3436;
+      margin-bottom: 10px;
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    @media (min-width: 620px) {
+      .analysis-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .analysis-card {
+      background: #FFFFFF;
+      border: 1.8px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .analysis-word {
+      font-weight: 900;
+      font-size: 1rem;
+      color: #0984E3;
+      margin-right: 4px;
+    }
+
+    .analysis-word.green {
+      color: #00B894;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      margin: 0 4px;
+    }
+
+    .badge-wrong { background: #FEE2E2; color: #DC2626; border: 1px solid #FCA5A5; }
+    .badge-structure { background: #EDE9FE; color: #6D28D9; border: 1px solid #DDD6FE; }
+    .badge-correct { background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0; }
+
+    .analysis-meaning {
+      font-weight: 700;
+      color: #7A4100;
+    }
+
+    .exp-rule-row {
+      margin-bottom: 12px;
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: #2D3436;
+      font-weight: 600;
+    }
+
+    .check-label { font-weight: 900; color: #00A884; margin-right: 6px; }
+    .exp-rule-pill { background: #FFF3CD; color: #856404; font-weight: 800; padding: 3px 10px; border-radius: 10px; margin: 0 4px; display: inline-block; }
+    .exp-highlight-green { background: #E8F8F5; color: #00A884; font-weight: 900; padding: 2px 8px; border-radius: 8px; display: inline-block; margin: 0 2px; }
+    .exp-wrong-row { font-size: 0.96rem; line-height: 1.6; color: #2D3436; font-weight: 600; }
+    .cross-label { font-weight: 900; color: #D63031; margin-right: 6px; }
+    .exp-wrong-tag { background: #FFEAEA; color: #D63031; font-weight: 800; padding: 2px 8px; border-radius: 8px; display: inline-block; margin: 0 3px; }
+
+    .submit-section { text-align: center; margin-top: 36px; margin-bottom: 50px; }
+    .submit-btn {
+      background: linear-gradient(135deg, #00C9A7, #00B894);
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 900;
+      padding: 16px 48px;
+      border: none;
+      border-radius: 999px;
+      box-shadow: 0 8px 0 #008770, 0 15px 25px rgba(0, 201, 167, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .submit-btn:hover { transform: translateY(-3px) scale(1.03); }
+
+    .result-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.65);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000; padding: 16px; backdrop-filter: blur(5px);
+    }
+
+    .result-card {
+      background: white; border-radius: 30px; padding: 32px 26px;
+      max-width: 500px; width: 100%; text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    .result-emoji { font-size: 3.5rem; margin-bottom: 10px; }
+    .result-score { font-size: 2.2rem; font-weight: 900; color: #6C5CE7; margin-bottom: 12px; }
+    .result-feedback {
+      background: #F8F9FE; border-radius: 18px; padding: 16px;
+      font-size: 1.05rem; line-height: 1.6; font-weight: 700;
+      color: #2D3436; margin-bottom: 24px; border: 2px dashed #A29BFE;
+    }
+
+    .retry-btn {
+      background: linear-gradient(135deg, #FDCB6E, #E17055);
+      color: white; font-size: 1.1rem; font-weight: 900;
+      padding: 12px 36px; border: none; border-radius: 999px;
+      box-shadow: 0 6px 0 #D35400; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Sky & City -->
+  <div class="sky-decorations">
+    <div class="sun-glow"></div>
+    <svg class="floating-cloud cloud-1" viewBox="0 0 100 60"><path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q90,30 90,40 Q90,50 80,50 L20,50 Z"/></svg>
+    <svg class="floating-cloud cloud-2" viewBox="0 0 100 60"><path d="M20,40 Q10,40 10,30 Q10,20 25,20 Q30,10 45,10 Q60,10 65,20 Q80,20 80,30 Q90,30 90,40 Q90,50 80,50 L20,50 Z"/></svg>
+  </div>
+  <div class="city-backdrop"></div>
+  <div class="bottom-road">
+    <div class="road-curb"></div>
+    <div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div><div class="road-line"></div>
+  </div>
+
+  <div class="container">
+
+    <!-- Top Sticky Bar -->
+    <div class="top-sticky-bar">
+      <div class="progress-row">
+        <div class="star-score-pill">
+          <span>⭐</span> <span id="star-score-text">0 / 40</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-bar-fill"></div>
+        </div>
+        <div class="progress-count-pill" id="progress-ratio-text">0 / 40</div>
+      </div>
+      <div class="teacher-contact-pill">
+        <div class="teacher-badge">
+          <span>👩‍🏫</span> Giáo viên tạo: <strong>Ms Lê Hằng English</strong>
+        </div>
+        <div>
+          <span>Chuyên luyện thi HSG & Luyện thi Đại học / Vào 10 chất lượng cao</span> • <span class="phone-tag">☎️ 0936.322.809</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Card Banner -->
+    <div class="unit-hero-card">
+      <div class="hero-content">
+        <div class="unit-badge">🌱 PRACTICE TEST 2 · HEALTHY LIVING & GENERATION GAP</div>
+        <h1 class="hero-title">Practice Test 2 Mastery</h1>
+        <div class="hero-subtitle">Đọc điền Tờ rơi (Q1-12) | Sắp xếp Đoạn văn, Thư & Hội thoại (Q13-15) | Điền khuyết Mệnh đề (Q16-20) | Đọc hiểu (Q21-28) | Tự luận (Q29-40)</div>
+      </div>
+      <div class="hero-graphic">
+        <svg viewBox="0 0 100 100">
+          <rect x="25" y="20" width="30" height="70" rx="4" fill="#00B894"/>
+          <polygon points="25,20 40,5 55,20" fill="#00B894"/>
+          <rect x="60" y="45" width="25" height="45" rx="3" fill="#55EFC4"/>
+          <circle cx="33" cy="32" r="3" fill="#FFF"/><circle cx="47" cy="32" r="3" fill="#FFF"/>
+          <circle cx="33" cy="46" r="3" fill="#FFF"/><circle cx="47" cy="46" r="3" fill="#FFF"/>
+          <circle cx="33" cy="60" r="3" fill="#FFF"/><circle cx="47" cy="60" r="3" fill="#FFF"/>
+          <circle cx="33" cy="74" r="3" fill="#FFF"/><circle cx="47" cy="74" r="3" fill="#FFF"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Khung thông báo bắt buộc -->
+    <div class="warning-box">
+      <div class="warning-title">⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</div>
+      <div class="warning-text">
+        Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.<br>
+        Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!
+      </div>
+      <div class="warning-tag">Kéo tới đâu, làm tới đó! *</div>
+    </div>
+
+    <!-- ===================================================================
+         DANH SÁCH 40 CÂU HỎI HIỂN THỊ TRỰC TIẾP TRONG HTML (KHÔNG BAO GIỜ ẨN)
+         =================================================================== -->
+    <div id="quiz-container">
+
+      <!-- PHẦN 1: CÂU 1 - 6 -->
+      <div class="exercise-divider"><span>📘</span> <span>PART 1 (Questions 1 - 6): Read the following leaflet and choose the option that best fits each of the numbered blanks.</span></div>
+
+      <div class="passage-box">
+        <div class="passage-title">🥗 Staying Healthy at College 🥗</div>
+        There are a few reasons why first-year college students often gain weight. The most common reason is that many college students just don't eat right. However, it's (1) ________ to know that it's really quite easy for students to avoid gaining weight.<br>
+        <b>Making the wrong choices</b><br>
+        College kitchens serve many kinds of food. New students often gain weight because they are choosing to eat (2) ________ of unhealthy food, especially when their parents are not around to advise them on what they should eat. (3) ________ students may also buy snacks to eat while they are studying. Furthermore, college students often have less time for walking, running, and doing sports because they are busy with their schoolwork or other college activities.<br>
+        <b>How to stay healthy</b><br>
+        ✓ Here are a few ideas for staying healthy at college:<br>
+        ✓ Eat only when you are hungry, not when you're bored.<br>
+        ✓ Always eat at the dinner table and never in front of the TV or the computer.<br>
+        ✓ Choose water over sugary drinks.<br>
+        ✓ Try to (4) ________ your room regularly for some fresh air and exercise.<br>
+        (5) ________ a deal with your friends to try and eat healthy food together. Walking, running, and playing sports is always more fun with friends, too. Help each other eat right and stay fit, and you can have a (6) ________.
+      </div>
+
+      <!-- QUESTION 1 -->
+      <div class="question-card" data-qid="1" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 1</span><span class="question-type-badge">Từ loại (Word Form)</span></div>
+        <div class="question-content">Question 1. However, it's (1) ________ to know that it's really quite easy for students to avoid gaining weight.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(1,'A')"><span class="option-key">A</span><span>encouraging</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(1,'B')"><span class="option-key">B</span><span>encouragement</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(1,'C')"><span class="option-key">C</span><span>encouragingly</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(1,'D')"><span class="option-key">D</span><span>encouraged</span></button>
+        </div>
+        <div class="explanation-box" id="exp-1">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Tuy nhiên, thật đáng khích lệ khi biết rằng sinh viên thực sự khá dễ dàng để tránh việc bị tăng cân.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">encouraging</span><span class="badge-pill badge-correct">adj (-ing)</span><span class="analysis-meaning">= đáng khích lệ (chỉ tính chất sự việc)</span></div>
+            <div class="analysis-card"><span class="analysis-word">encouragement</span><span class="badge-pill badge-wrong">danh từ</span><span class="analysis-meaning">= sự khích lệ, nguồn động viên</span></div>
+            <div class="analysis-card"><span class="analysis-word">encouragingly</span><span class="badge-pill badge-wrong">trạng từ</span><span class="analysis-meaning">= một cách đầy khích lệ</span></div>
+            <div class="analysis-card"><span class="analysis-word">encouraged</span><span class="badge-pill badge-wrong">adj (-ed)</span><span class="analysis-meaning">= cảm thấy được khích lệ (chỉ cảm xúc người)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Cấu trúc It is + adj + to V:</span><span>Chủ ngữ giả 'It' mô tả tính chất của hành động 'to know that...' nên ta dùng tính từ đuôi -ing: <span class="exp-highlight-green">encouraging</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">encouragement / encouragingly</span> - sai từ loại. <span class="exp-wrong-tag">encouraged</span> - chỉ dùng cho cảm xúc của con người.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 2 -->
+      <div class="question-card" data-qid="2" data-correct="D">
+        <div class="question-header"><span class="question-num">Câu 2</span><span class="question-type-badge">Lượng từ (Quantifiers)</span></div>
+        <div class="question-content">Question 2. New students often gain weight because they are choosing to eat (2) ________ of unhealthy food...</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(2,'A')"><span class="option-key">A</span><span>lack</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(2,'B')"><span class="option-key">B</span><span>degree</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(2,'C')"><span class="option-key">C</span><span>number</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(2,'D')"><span class="option-key">D</span><span>plenty</span></button>
+        </div>
+        <div class="explanation-box" id="exp-2">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Tân sinh viên thường tăng cân vì họ lựa chọn ăn rất nhiều đồ ăn không lành mạnh...</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">lack</span><span class="badge-pill badge-wrong">thiếu mạo từ 'a'</span><span class="analysis-meaning">= a lack of (sự thiếu hụt)</span></div>
+            <div class="analysis-card"><span class="analysis-word">degree</span><span class="badge-pill badge-wrong">thiếu mạo từ 'a'</span><span class="analysis-meaning">= a degree of (mức độ)</span></div>
+            <div class="analysis-card"><span class="analysis-word">number</span><span class="badge-pill badge-wrong">+ N số nhiều</span><span class="analysis-meaning">= a number of (đi với danh từ số nhiều)</span></div>
+            <div class="analysis-card"><span class="analysis-word green">plenty</span><span class="badge-pill badge-correct">plenty of</span><span class="analysis-meaning">= rất nhiều (+ N không đếm được 'food')</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Cụm lượng từ Plenty of:</span><span>Đi trực tiếp với 'of' mà không cần mạo từ 'a' đứng trước, dùng được với danh từ không đếm được 'unhealthy food': <span class="exp-highlight-green">plenty of unhealthy food</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">lack / degree / number</span> - đều thiếu mạo từ 'a' phía trước, và 'number' không đi với danh từ không đếm được.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 3 -->
+      <div class="question-card" data-qid="3" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 3</span><span class="question-type-badge">Từ hạn định (Determiners)</span></div>
+        <div class="question-content">Question 3. (3) ________ students may also buy snacks to eat while they are studying.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(3,'A')"><span class="option-key">A</span><span>Each</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(3,'B')"><span class="option-key">B</span><span>Some</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(3,'C')"><span class="option-key">C</span><span>Others</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(3,'D')"><span class="option-key">D</span><span>The others</span></button>
+        </div>
+        <div class="explanation-box" id="exp-3">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Một số sinh viên cũng có thể mua đồ ăn vặt để ăn trong lúc đang học bài.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">Each</span><span class="badge-pill badge-wrong">+ N số ít</span><span class="analysis-meaning">= mỗi (Each student)</span></div>
+            <div class="analysis-card"><span class="analysis-word green">Some</span><span class="badge-pill badge-correct">+ N số nhiều</span><span class="analysis-meaning">= một vài, một số (Some students)</span></div>
+            <div class="analysis-card"><span class="analysis-word">Others</span><span class="badge-pill badge-wrong">đại từ độc lập</span><span class="analysis-meaning">= những người khác (đứng một mình)</span></div>
+            <div class="analysis-card"><span class="analysis-word">The others</span><span class="badge-pill badge-wrong">đại từ độc lập</span><span class="analysis-meaning">= những người còn lại (đứng một mình)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Some + Danh từ số nhiều:</span><span>Phía sau chỗ trống là danh từ đếm được số nhiều 'students' → Dùng <span class="exp-highlight-green">Some students</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">Each</span> - đi với danh từ số ít. <span class="exp-wrong-tag">Others / The others</span> - không cộng danh từ theo sau.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 4 -->
+      <div class="question-card" data-qid="4" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 4</span><span class="question-type-badge">Cụm động từ (Phrasal Verbs)</span></div>
+        <div class="question-content">Question 4. Try to (4) ________ your room regularly for some fresh air and exercise.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(4,'A')"><span class="option-key">A</span><span>put up with</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(4,'B')"><span class="option-key">B</span><span>get out of</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(4,'C')"><span class="option-key">C</span><span>get on with</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(4,'D')"><span class="option-key">D</span><span>drop out of</span></button>
+        </div>
+        <div class="explanation-box" id="exp-4">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Hãy cố gắng bước ra khỏi phòng của bạn thường xuyên để hít thở không khí trong lành và tập thể dục.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">put up with</span><span class="badge-pill badge-structure">chịu đựng</span><span class="analysis-meaning">= chịu đựng điều khó chịu</span></div>
+            <div class="analysis-card"><span class="analysis-word green">get out of</span><span class="badge-pill badge-correct">đi ra khỏi</span><span class="analysis-meaning">= bước ra khỏi phòng (get out of your room)</span></div>
+            <div class="analysis-card"><span class="analysis-word">get on with</span><span class="badge-pill badge-structure">hòa thuận</span><span class="analysis-meaning">= sống hòa hợp với ai</span></div>
+            <div class="analysis-card"><span class="analysis-word">drop out of</span><span class="badge-pill badge-structure">bỏ học</span><span class="analysis-meaning">= bỏ học giữa chừng</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Ngữ cảnh vận động ngoài trời:</span><span>Để hít thở không khí trong lành (fresh air), sinh viên cần bước ra khỏi phòng: <span class="exp-highlight-green">get out of your room</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">put up with / get on with / drop out of</span> - hoàn toàn sai nghĩa khi ghép với 'your room'.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 5 -->
+      <div class="question-card" data-qid="5" data-correct="D">
+        <div class="question-header"><span class="question-num">Câu 5</span><span class="question-type-badge">Cụm từ cố định (Collocations)</span></div>
+        <div class="question-content">Question 5. (5) ________ a deal with your friends to try and eat healthy food together.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(5,'A')"><span class="option-key">A</span><span>Take</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(5,'B')"><span class="option-key">B</span><span>Keep</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(5,'C')"><span class="option-key">C</span><span>Book</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(5,'D')"><span class="option-key">D</span><span>Make</span></button>
+        </div>
+        <div class="explanation-box" id="exp-5">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Hãy lập một thỏa thuận với bạn bè để cùng nhau cố gắng ăn thực phẩm lành mạnh.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">Take</span><span class="badge-pill badge-wrong">động từ</span><span class="analysis-meaning">= cầm, lấy</span></div>
+            <div class="analysis-card"><span class="analysis-word">Keep</span><span class="badge-pill badge-wrong">động từ</span><span class="analysis-meaning">= giữ gìn</span></div>
+            <div class="analysis-card"><span class="analysis-word">Book</span><span class="badge-pill badge-wrong">động từ</span><span class="analysis-meaning">= đặt vé, đặt chỗ</span></div>
+            <div class="analysis-card"><span class="analysis-word green">Make</span><span class="badge-pill badge-correct">make a deal</span><span class="analysis-meaning">= thỏa thuận, giao kèo với ai</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Collocation với Deal:</span><span>Cụm từ cố định: <span class="exp-highlight-green">make a deal with sb</span> (lập giao kèo/thỏa thuận cùng ai).</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">Take / Keep / Book</span> - không đi với 'a deal with sb'.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 6 -->
+      <div class="question-card" data-qid="6" data-correct="D">
+        <div class="question-header"><span class="question-num">Câu 6</span><span class="question-type-badge">Trật tự từ (Word Order)</span></div>
+        <div class="question-content">Question 6. Help each other eat right and stay fit, and you can have a (6) ________.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(6,'A')"><span class="option-key">A</span><span>healthy year freshman</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(6,'B')"><span class="option-key">B</span><span>year healthy freshman</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(6,'C')"><span class="option-key">C</span><span>freshman healthy year</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(6,'D')"><span class="option-key">D</span><span>healthy freshman year</span></button>
+        </div>
+        <div class="explanation-box" id="exp-6">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Hãy giúp nhau ăn uống đúng cách và giữ dáng, và bạn có thể có một năm nhất đại học thật khỏe mạnh.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">healthy year freshman</span><span class="badge-pill badge-wrong">ngược danh từ</span><span class="analysis-meaning">= sai vị trí danh từ chính year</span></div>
+            <div class="analysis-card"><span class="analysis-word">year healthy freshman</span><span class="badge-pill badge-wrong">sai vị trí adj</span><span class="analysis-meaning">= tính từ healthy bị kẹp ở giữa</span></div>
+            <div class="analysis-card"><span class="analysis-word">freshman healthy year</span><span class="badge-pill badge-wrong">tách danh từ ghép</span><span class="analysis-meaning">= làm vỡ cụm danh từ ghép freshman year</span></div>
+            <div class="analysis-card"><span class="analysis-word green">healthy freshman year</span><span class="badge-pill badge-correct">chuẩn trật tự</span><span class="analysis-meaning">= Adj (healthy) + Danh từ ghép (freshman year)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Tính từ + Danh từ ghép:</span><span>'Freshman year' là danh từ ghép cố định nghĩa là 'năm thứ nhất đại học'. Tính từ 'healthy' đứng trước bổ nghĩa cho cả cụm: <span class="exp-highlight-green">healthy freshman year</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">A, B, C</span> - sắp xếp sai quy tắc cụm danh từ.</div>
+        </div>
+      </div>
+
+      <!-- PHẦN 2: CÂU 7 - 12 -->
+      <div class="exercise-divider"><span>📘</span> <span>PART 2 (Questions 7 - 12): Read the following leaflet and choose the option that best fits each of the numbered blanks.</span></div>
+
+      <div class="passage-box">
+        <div class="passage-title">🤝 Understanding the Generation Gap 🤝</div>
+        In today's fast-paced world, the concept of the generation gap has become increasingly (7) ________. It reflects the differences in values between various age groups, often leading to misunderstandings and conflicts. While older generations may value stability and tradition, younger generations often prioritize innovation and change.<br>
+        This divergence can be particularly evident in interactions and communication (8) ________ where technology plays a significant role. (9) ________, while the younger demographic tends to favor social media platforms for engagement, their elders might prefer face-to-face conversations or emails.<br>
+        Such differences can (10) ________ tension within families and workplaces, prompting the need for effective dialogue. Bridging this gap is crucial for fostering understanding and collaboration across age groups. How can we approach this challenge? By recognizing that (11) ________ perspectives are valid, we can work towards a more harmonious (12) ________.
+      </div>
+
+      <!-- QUESTION 7 -->
+      <div class="question-card" data-qid="7" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 7</span><span class="question-type-badge">Từ vựng (Vocabulary)</span></div>
+        <div class="question-content">Question 7. In today's fast-paced world, the concept of the generation gap has become increasingly (7) ________.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(7,'A')"><span class="option-key">A</span><span>prevalent</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(7,'B')"><span class="option-key">B</span><span>different</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(7,'C')"><span class="option-key">C</span><span>social</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(7,'D')"><span class="option-key">D</span><span>traditional</span></button>
+        </div>
+        <div class="explanation-box" id="exp-7">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Trong thế giới nhịp độ nhanh ngày nay, khái niệm khoảng cách thế hệ ngày càng trở nên phổ biến/thịnh hành.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">prevalent</span><span class="badge-pill badge-correct">phổ biến</span><span class="analysis-meaning">= phổ biến, thường thấy khắp nơi</span></div>
+            <div class="analysis-card"><span class="analysis-word">different</span><span class="badge-pill badge-structure">khác biệt</span><span class="analysis-meaning">= khác nhau</span></div>
+            <div class="analysis-card"><span class="analysis-word">social</span><span class="badge-pill badge-structure">xã hội</span><span class="analysis-meaning">= thuộc về xã hội</span></div>
+            <div class="analysis-card"><span class="analysis-word">traditional</span><span class="badge-pill badge-structure">truyền thống</span><span class="analysis-meaning">= thuộc về truyền thống</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Ngữ nghĩa phù hợp:</span><span>Khái niệm khoảng cách thế hệ ngày càng xuất hiện phổ biến trong đời sống hiện đại → <span class="exp-highlight-green">prevalent</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">different / social / traditional</span> - không hợp ngữ cảnh mô tả độ phủ sóng của một khái niệm.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 8 -->
+      <div class="question-card" data-qid="8" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 8</span><span class="question-type-badge">Cụm từ cố định (Collocations)</span></div>
+        <div class="question-content">Question 8. This divergence can be particularly evident in interactions and communication (8) ________ where technology plays a significant role.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(8,'A')"><span class="option-key">A</span><span>kinds</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(8,'B')"><span class="option-key">B</span><span>styles</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(8,'C')"><span class="option-key">C</span><span>sorts</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(8,'D')"><span class="option-key">D</span><span>types</span></button>
+        </div>
+        <div class="explanation-box" id="exp-8">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Sự khác biệt này có thể thấy rõ trong các tương tác và phong cách giao tiếp nơi công nghệ đóng vai trò lớn.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">kinds</span><span class="badge-pill badge-wrong">kinds of</span><span class="analysis-meaning">= các loại</span></div>
+            <div class="analysis-card"><span class="analysis-word green">styles</span><span class="badge-pill badge-correct">communication styles</span><span class="analysis-meaning">= phong cách giao tiếp</span></div>
+            <div class="analysis-card"><span class="analysis-word">sorts</span><span class="badge-pill badge-wrong">sorts of</span><span class="analysis-meaning">= các thứ/loại</span></div>
+            <div class="analysis-card"><span class="analysis-word">types</span><span class="badge-pill badge-wrong">types of</span><span class="analysis-meaning">= các kiểu</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Collocation:</span><span>Cụm danh từ cố định: <span class="exp-highlight-green">communication styles</span> (phong cách giao tiếp).</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">kinds / sorts / types</span> - thường đứng trước 'of communication'.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 9 -->
+      <div class="question-card" data-qid="9" data-correct="D">
+        <div class="question-header"><span class="question-num">Câu 9</span><span class="question-type-badge">Liên từ (Linking Words)</span></div>
+        <div class="question-content">Question 9. (9) ________, while the younger demographic tends to favor social media platforms for engagement, their elders might prefer face-to-face conversations or emails.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(9,'A')"><span class="option-key">A</span><span>After all</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(9,'B')"><span class="option-key">B</span><span>In case</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(9,'C')"><span class="option-key">C</span><span>Along with</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(9,'D')"><span class="option-key">D</span><span>For instance</span></button>
+        </div>
+        <div class="explanation-box" id="exp-9">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Ví dụ như, trong khi giới trẻ ưa chuộng mạng xã hội để tương tác, thì người lớn tuổi lại thích trò chuyện trực tiếp hoặc qua email.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">After all</span><span class="badge-pill badge-wrong">rốt cuộc</span><span class="analysis-meaning">= suy cho cùng</span></div>
+            <div class="analysis-card"><span class="analysis-word">In case</span><span class="badge-pill badge-wrong">phòng khi</span><span class="analysis-meaning">= phòng trường hợp</span></div>
+            <div class="analysis-card"><span class="analysis-word">Along with</span><span class="badge-pill badge-wrong">cùng với</span><span class="analysis-meaning">= đi kèm với (+ cụm danh từ)</span></div>
+            <div class="analysis-card"><span class="analysis-word green">For instance</span><span class="badge-pill badge-correct">nêu ví dụ</span><span class="analysis-meaning">= Ví dụ như (= For example)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Liên từ nêu dẫn chứng:</span><span>Câu sau đưa ra ví dụ cụ thể về mạng xã hội và email để minh họa cho 'communication styles' ở câu trước → <span class="exp-highlight-green">For instance</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">After all / In case / Along with</span> - sai chức năng liên kết câu.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 10 -->
+      <div class="question-card" data-qid="10" data-correct="C">
+        <div class="question-header"><span class="question-num">Câu 10</span><span class="question-type-badge">Cụm động từ (Phrasal Verbs)</span></div>
+        <div class="question-content">Question 10. Such differences can (10) ________ tension within families and workplaces, prompting the need for effective dialogue.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(10,'A')"><span class="option-key">A</span><span>consist of</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(10,'B')"><span class="option-key">B</span><span>refer to</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(10,'C')"><span class="option-key">C</span><span>result in</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(10,'D')"><span class="option-key">D</span><span>absorbed in</span></button>
+        </div>
+        <div class="explanation-box" id="exp-10">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Những sự khác biệt như vậy có thể dẫn đến sự căng thẳng trong gia đình và nơi làm việc...</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">consist of</span><span class="badge-pill badge-structure">bao gồm</span><span class="analysis-meaning">= bao gồm</span></div>
+            <div class="analysis-card"><span class="analysis-word">refer to</span><span class="badge-pill badge-structure">ám chỉ</span><span class="analysis-meaning">= đề cập tới</span></div>
+            <div class="analysis-card"><span class="analysis-word green">result in</span><span class="badge-pill badge-correct">dẫn đến</span><span class="analysis-meaning">= gây ra, dẫn đến (= lead to)</span></div>
+            <div class="analysis-card"><span class="analysis-word">absorbed in</span><span class="badge-pill badge-wrong">sai dạng V</span><span class="analysis-meaning">= đắm chìm vào (sau can phải là V nguyên mẫu)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Quan hệ Nguyên nhân - Kết quả:</span><span>Sự khác biệt thế hệ dẫn đến sự căng thẳng: <span class="exp-highlight-green">result in tension</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">consist of / refer to / absorbed in</span> - sai nghĩa và sai ngữ pháp sau 'can'.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 11 -->
+      <div class="question-card" data-qid="11" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 11</span><span class="question-type-badge">Lượng từ (Quantifiers)</span></div>
+        <div class="question-content">Question 11. By recognizing that (11) ________ perspectives are valid, we can work towards a more harmonious...</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(11,'A')"><span class="option-key">A</span><span>both</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(11,'B')"><span class="option-key">B</span><span>much</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(11,'C')"><span class="option-key">C</span><span>none</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(11,'D')"><span class="option-key">D</span><span>each</span></button>
+        </div>
+        <div class="explanation-box" id="exp-11">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Bằng cách công nhận rằng góc nhìn của cả hai phía đều có giá trị hợp lý...</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">both</span><span class="badge-pill badge-correct">+ N số nhiều</span><span class="analysis-meaning">= cả hai (both perspectives are)</span></div>
+            <div class="analysis-card"><span class="analysis-word">much</span><span class="badge-pill badge-wrong">+ N không đếm được</span><span class="analysis-meaning">= nhiều</span></div>
+            <div class="analysis-card"><span class="analysis-word">none</span><span class="badge-pill badge-wrong">đại từ</span><span class="analysis-meaning">= không cái nào (không cộng trực tiếp N)</span></div>
+            <div class="analysis-card"><span class="analysis-word">each</span><span class="badge-pill badge-wrong">+ N số ít</span><span class="analysis-meaning">= mỗi (each perspective is)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Both + Danh từ số nhiều:</span><span>Đi trước danh từ số nhiều 'perspectives' và động từ 'are' để chỉ 2 thế hệ già và trẻ → <span class="exp-highlight-green">both perspectives</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">much / none / each</span> - không đi trực tiếp với danh từ đếm được số nhiều.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 12 -->
+      <div class="question-card" data-qid="12" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 12</span><span class="question-type-badge">Từ vựng (Vocabulary)</span></div>
+        <div class="question-content">Question 12. ...we can work towards a more harmonious (12) ________.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(12,'A')"><span class="option-key">A</span><span>individualism</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(12,'B')"><span class="option-key">B</span><span>relationship</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(12,'C')"><span class="option-key">C</span><span>characteristic</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(12,'D')"><span class="option-key">D</span><span>disagreement</span></button>
+        </div>
+        <div class="explanation-box" id="exp-12">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> ...chúng ta có thể hướng tới một mối quan hệ hòa hợp hơn.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">individualism</span><span class="badge-pill badge-structure">chủ nghĩa cá nhân</span><span class="analysis-meaning">= chủ nghĩa cá nhân</span></div>
+            <div class="analysis-card"><span class="analysis-word green">relationship</span><span class="badge-pill badge-correct">mối quan hệ</span><span class="analysis-meaning">= mối quan hệ hài hòa (harmonious relationship)</span></div>
+            <div class="analysis-card"><span class="analysis-word">characteristic</span><span class="badge-pill badge-structure">đặc điểm</span><span class="analysis-meaning">= nét đặc trưng</span></div>
+            <div class="analysis-card"><span class="analysis-word">disagreement</span><span class="badge-pill badge-wrong">bất đồng</span><span class="analysis-meaning">= sự bất đồng (mâu thuẫn với harmonious)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Sự kết hợp từ:</span><span>Tính từ 'harmonious' (hòa thuận, hài hòa) kết hợp chuẩn xác với <span class="exp-highlight-green">relationship</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">individualism / characteristic / disagreement</span> - sai nghĩa.</div>
+        </div>
+      </div>
+
+      <!-- PHẦN 3: CÂU 13 - 15 -->
+      <div class="exercise-divider"><span>📘</span> <span>PART 3 (Questions 13 - 15): Rearrange the following sentences to make a meaningful paragraph/letter/conversation.</span></div>
+
+      <!-- QUESTION 13 -->
+      <div class="question-card" data-qid="13" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 13</span><span class="question-type-badge">Sắp xếp đoạn văn</span></div>
+        <div class="question-content">Question 13.<br><b>a.</b> Moreover, staying hydrated by drinking plenty of water aids in digestion and nutrient absorption.<br><b>b.</b> To begin with, a balanced diet rich in fruits, vegetables, and whole grains provides essential nutrients and energy.<br><b>c.</b> Adopting these habits can lead to a healthier, more vibrant life.<br><b>d.</b> Regular physical activity strengthens the heart, muscles, and bones, while also improving mood and mental clarity.<br><b>e.</b> Living a healthy life involves several key practices that promote overall well-being.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(13,'A')"><span class="option-key">A</span><span>e - b - d - a - c</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(13,'B')"><span class="option-key">B</span><span>a - b - c - e - d</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(13,'C')"><span class="option-key">C</span><span>e - b - d - c - d</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(13,'D')"><span class="option-key">D</span><span>a - c - d - e - b</span></button>
+        </div>
+        <div class="explanation-box" id="exp-13">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> (e) Sống lành mạnh gồm một số thói quen cốt lõi... → (b) Đầu tiên là chế độ ăn cân bằng... → (d) Hoạt động thể chất thường xuyên... → (a) Hơn nữa, uống đủ nước... → (c) Áp dụng các thói quen này dẫn đến cuộc sống khỏe khoắn hơn.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">e - b - d - a - c</span><span class="badge-pill badge-correct">chuẩn mạch 100%</span><span class="analysis-meaning">= Câu chủ đề (e) -> To begin with (b) -> Ý 2 (d) -> Moreover (a) -> Câu kết (c)</span></div>
+            <div class="analysis-card"><span class="analysis-word">a - b - c - e - d</span><span class="badge-pill badge-wrong">sai mở đầu</span><span class="analysis-meaning">= không mở đầu bằng Moreover</span></div>
+            <div class="analysis-card"><span class="analysis-word">e - b - d - c - d</span><span class="badge-pill badge-wrong">lặp chữ d</span><span class="analysis-meaning">= thiếu câu a</span></div>
+            <div class="analysis-card"><span class="analysis-word">a - c - d - e - b</span><span class="badge-pill badge-wrong">sai mở đầu</span><span class="analysis-meaning">= sai vị trí câu chủ đề</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Mạch đoạn văn:</span><span>Mở đầu bằng câu chủ đề (e), liệt kê từ 'To begin with' (b) → (d) → 'Moreover' (a) và chốt lại bằng 'Adopting these habits' (c): <span class="exp-highlight-green">e - b - d - a - c</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">B, C, D</span> - sai vị trí các từ nối chuyển ý.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 14 -->
+      <div class="question-card" data-qid="14" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 14</span><span class="question-type-badge">Sắp xếp bức thư</span></div>
+        <div class="question-content">Question 14. Dear Dad,<br><b>a.</b> I respect your desire for me to have a secure job, and I hope this data helps narrow our generation gap by showing that creative work can be both meaningful and sustainable.<br><b>b.</b> I know you prefer traditional career paths, but I see graphic design as a viable foundation for a modern future.<br><b>c.</b> These jobs not only offer economic stability but also support remote work, well-being, and use of digital skills—traits highly valued in our generation.<br><b>d.</b> Today, I realize that the creative industries—fields like graphic design, digital media, and UX—are booming.<br><b>e.</b> In the UK alone, they contributed about £125 billion and employed over 2.4 million people as of 2024.<br>Love, Win</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(14,'A')"><span class="option-key">A</span><span>b - c - d - e - a</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(14,'B')"><span class="option-key">B</span><span>d - e - c - b - a</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(14,'C')"><span class="option-key">C</span><span>c - d - a - e - b</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(14,'D')"><span class="option-key">D</span><span>d - a - b - c - e</span></button>
+        </div>
+        <div class="explanation-box" id="exp-14">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> (d) Ngành công nghiệp sáng tạo đang bùng nổ → (e) Tại Anh, chúng đóng góp 125 tỷ bảng... → (c) Những công việc này mang lại sự ổn định... → (b) Con biết bố thích nghề truyền thống nhưng con thấy thiết kế đồ họa rất khả thi → (a) Con hy vọng số liệu này giúp thu hẹp khoảng cách thế hệ giữa bố con mình.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">b - c - d - e - a</span><span class="badge-pill badge-wrong">sai quy chiếu</span><span class="analysis-meaning">= câu b số ít không khớp 'These jobs' ở câu c</span></div>
+            <div class="analysis-card"><span class="analysis-word green">d - e - c - b - a</span><span class="badge-pill badge-correct">chuẩn mạch 100%</span><span class="analysis-meaning">= Giới thiệu ngành (d) -> Số liệu (e) -> Lợi ích (c) -> Nguyện vọng (b) -> Kết thư (a)</span></div>
+            <div class="analysis-card"><span class="analysis-word">c - d - a - e - b</span><span class="badge-pill badge-wrong">sai mở đầu</span><span class="analysis-meaning">= mở đầu bằng 'These jobs' khi chưa nêu nghề</span></div>
+            <div class="analysis-card"><span class="analysis-word">d - a - b - c - e</span><span class="badge-pill badge-wrong">sai vị trí data</span><span class="analysis-meaning">= nói 'this data' ở câu a trước khi đưa số liệu ở câu e</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Liên kết đại từ:</span><span>(d) nêu 'creative industries' → (e) dùng 'they' dẫn số liệu → (c) dùng 'These jobs' → (b) liên hệ bản thân → (a) kết thư: <span class="exp-highlight-green">d - e - c - b - a</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">A, C, D</span> - đứt mạch quy chiếu đại từ.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 15 -->
+      <div class="question-card" data-qid="15" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 15</span><span class="question-type-badge">Sắp xếp hội thoại</span></div>
+        <div class="question-content">Question 15.<br><b>a. Father:</b> I just want to give you advice. From my traditional view, music isn't a stable career.<br><b>b. Father:</b> I understand, but think carefully. Life is not just about passion — it's also about responsibility.<br><b>c. Son:</b> Why do we always argue about my future job? I want to follow my dream of becoming a musician.<br><b>d. Son:</b> But I don't want to follow a path that doesn't suit me. I need freedom to decide.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(15,'A')"><span class="option-key">A</span><span>d - a - c - b</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(15,'B')"><span class="option-key">B</span><span>c - a - d - b</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(15,'C')"><span class="option-key">C</span><span>d - b - a - c</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(15,'D')"><span class="option-key">D</span><span>c - d - a - b</span></button>
+        </div>
+        <div class="explanation-box" id="exp-15">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> (c) Con: Sao bố con mình cứ tranh cãi về nghề tương lai? Con muốn làm nhạc sĩ. → (a) Bố: Theo quan điểm của bố, âm nhạc không ổn định. → (d) Con: Nhưng con cần tự do quyết định. → (b) Bố: Bố hiểu, nhưng cuộc sống còn là trách nhiệm nữa.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">d - a - c - b</span><span class="badge-pill badge-wrong">sai mở đầu</span><span class="analysis-meaning">= không mở đầu bằng 'But'</span></div>
+            <div class="analysis-card"><span class="analysis-word green">c - a - d - b</span><span class="badge-pill badge-correct">chuẩn đối thoại</span><span class="analysis-meaning">= Con hỏi (c) -> Bố giải thích (a) -> Con phản biện (d) -> Bố khuyên (b)</span></div>
+            <div class="analysis-card"><span class="analysis-word">d - b - a - c</span><span class="badge-pill badge-wrong">sai mở đầu</span><span class="analysis-meaning">= mở đầu bằng 'But'</span></div>
+            <div class="analysis-card"><span class="analysis-word">c - d - a - b</span><span class="badge-pill badge-wrong">lệch lượt lời</span><span class="analysis-meaning">= Con nói 2 câu liên tiếp</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Tương tác luân phiên:</span><span>Con nêu ước mơ musician (c) → Bố nhận xét về music (a) → Con đáp lại (d) → Bố chốt lời khuyên (b): <span class="exp-highlight-green">c - a - d - b</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">A, C, D</span> - sai mạch đối đáp.</div>
+        </div>
+      </div>
+
+      <!-- PHẦN 4: CÂU 16 - 20 -->
+      <div class="exercise-divider"><span>📘</span> <span>PART 4 (Questions 16 - 20): Read the following passage and choose the option that best fits each of the numbered blanks.</span></div>
+
+      <div class="passage-box">
+        <div class="passage-title">👩‍👧‍👦 A Mother's Journey 👩‍👧‍👦</div>
+        The generation gap, which many experts see as a big challenge in modern families, has become even wider with the rise of digital technology. Mrs. Lan, a mother whose teenagers often used their smartphones a lot, (16) ________.<br>
+        After going to a workshop, Mrs. Lan understood that the teenagers she worried about belonged to a generation whose way of communicating is very different from their parents'. The workshop, which was planned by experts in child psychology, (17) ________.<br>
+        Encouraged by this idea, Mrs. Lan started to watch her children's activities more carefully. She spent time watching videos her daughter shared, many of which were made to celebrate friendships and special moments. Her son, (18) ________.<br>
+        Knowing how important these activities were, (19) ________. By closing the gap, she built trust, which is very important in relationships that face challenges because of generation differences.<br>
+        Although they still sometimes disagreed, Mrs. Lan's patience and effort to understand her children made a big difference. (20) ________.
+      </div>
+
+      <!-- QUESTION 16 -->
+      <div class="question-card" data-qid="16" data-correct="D">
+        <div class="question-header"><span class="question-num">Câu 16</span><span class="question-type-badge">Cấu trúc câu (Sentence Structure)</span></div>
+        <div class="question-content">Question 16. Mrs. Lan, a mother whose teenagers often used their smartphones a lot, (16) ________.</div>
+        <div class="options-grid">
+          <button class="option-btn" data-key="A" onclick="selectAns(16,'A')"><span class="option-key">A</span><span>initially there were questions about why they used technology so much in their daily lives</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(16,'B')"><span class="option-key">B</span><span>used to accept their behavior without asking questions or learning what they were doing</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(16,'C')"><span class="option-key">C</span><span>frequently urge them to focus on studying instead of sharing her concerns about screen time</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(16,'D')"><span class="option-key">D</span><span>at first thought their habits were unhealthy and ignored the benefits of online communication</span></button>
+        </div>
+        <div class="explanation-box" id="exp-16">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Cô Lan, một người mẹ có các con tuổi thiếu niên thường dùng điện thoại rất nhiều, ban đầu đã nghĩ thói quen của con là không lành mạnh và phớt lờ lợi ích của giao tiếp trực tuyến.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">Câu A</span><span class="badge-pill badge-wrong">thiếu vị ngữ</span><span class="analysis-meaning">= chủ ngữ Mrs. Lan bị bỏ lơ không có động từ</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu B</span><span class="badge-pill badge-wrong">sai mạch truyện</span><span class="analysis-meaning">= chấp nhận không thắc mắc (mâu thuẫn đoạn 2)</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu C</span><span class="badge-pill badge-wrong">sai chia V 'urge'</span><span class="analysis-meaning">= không chia quá khứ đơn cũng không thêm -s</span></div>
+            <div class="analysis-card"><span class="analysis-word green">Câu D</span><span class="badge-pill badge-correct">chuẩn vị ngữ</span><span class="analysis-meaning">= động từ quá khứ đơn 'thought... and ignored...'</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Vị ngữ của câu:</span><span>Chủ ngữ 'Mrs. Lan' cần cụm vị ngữ chia thì quá khứ đơn đồng bộ với toàn bài: <span class="exp-highlight-green">at first thought their habits were unhealthy and ignored...</span></span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">A, B, C</span> - lỗi câu cụt, sai thì động từ hoặc mâu thuẫn ngữ cảnh.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 17 -->
+      <div class="question-card" data-qid="17" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 17</span><span class="question-type-badge">Cấu trúc câu (Sentence Structure)</span></div>
+        <div class="question-content">Question 17. The workshop, which was planned by experts in child psychology, (17) ________.</div>
+        <div class="options-grid">
+          <button class="option-btn" data-key="A" onclick="selectAns(17,'A')"><span class="option-key">A</span><span>presenting social media mainly as a useful way to strengthen friendships and share feelings</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(17,'B')"><span class="option-key">B</span><span>showed how social media could be a useful tool for expressing feelings and connecting with others</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(17,'C')"><span class="option-key">C</span><span>which explains why teenagers use social media mainly for entertainment rather than social connection</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(17,'D')"><span class="option-key">D</span><span>emphasized how social media helping young people learn new skills and stay informed</span></button>
+        </div>
+        <div class="explanation-box" id="exp-17">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Buổi hội thảo, được lên kế hoạch bởi các chuyên gia tâm lý trẻ em, đã chỉ ra cách mạng xã hội có thể là một công cụ hữu ích để bày tỏ cảm xúc và kết nối với người khác.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">Câu A</span><span class="badge-pill badge-wrong">thiếu V chính</span><span class="analysis-meaning">= dùng V-ing presenting làm câu thiếu vị ngữ</span></div>
+            <div class="analysis-card"><span class="analysis-word green">Câu B</span><span class="badge-pill badge-correct">chuẩn ngữ pháp</span><span class="analysis-meaning">= động từ chính 'showed' + mệnh đề 'how S + could be...'</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu C</span><span class="badge-pill badge-wrong">thừa which</span><span class="analysis-meaning">= lặp mệnh đề quan hệ làm mất vị ngữ chính</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu D</span><span class="badge-pill badge-wrong">sai V-ing</span><span class="analysis-meaning">= 'how social media helping' thiếu động từ chia thì</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Động từ chính của chủ ngữ:</span><span>Chủ ngữ 'The workshop' cần động từ chính chia quá khứ đơn: <span class="exp-highlight-green">showed how social media could be a useful tool...</span></span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">A, C, D</span> - thiếu động từ chia thì cho mệnh đề chính hoặc mệnh đề phụ.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 18 -->
+      <div class="question-card" data-qid="18" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 18</span><span class="question-type-badge">Mệnh đề phân từ & Vị ngữ</span></div>
+        <div class="question-content">Question 18. Her son, (18) ________.</div>
+        <div class="options-grid">
+          <button class="option-btn" data-key="A" onclick="selectAns(18,'A')"><span class="option-key">A</span><span>being someone who enjoyed online gaming, shared with her how such games provided a way to relieve pressure after classes</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(18,'B')"><span class="option-key">B</span><span>whom spent a lot of time on online games, explaining that these activities helped him to unwind after stressful school days</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(18,'C')"><span class="option-key">C</span><span>that online gaming was his favorite pastime and said it helped him relax whenever school was tough</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(18,'D')"><span class="option-key">D</span><span>told her how these games helped him relax after a long day at school, whose hobby was often playing online games</span></button>
+        </div>
+        <div class="explanation-box" id="exp-18">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Con trai của cô, vốn là người thích chơi game trực tuyến, đã chia sẻ với mẹ cách những trò chơi đó giúp giải tỏa áp lực sau giờ học.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">Câu A</span><span class="badge-pill badge-correct">chuẩn 100%</span><span class="analysis-meaning">= cụm phân từ 'being someone...' + động từ chính 'shared with her...'</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu B</span><span class="badge-pill badge-wrong">sai whom & V</span><span class="analysis-meaning">= dùng whom làm chủ ngữ và thiếu động từ chính</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu C</span><span class="badge-pill badge-wrong">sai that</span><span class="analysis-meaning">= không dùng that sau dấu phẩy</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu D</span><span class="badge-pill badge-wrong">sai vị trí whose</span><span class="analysis-meaning">= đặt whose hobby sau danh từ school là sai</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Cụm phân từ xen giữa 2 dấu phẩy:</span><span>Sau 'Her son,' là cụm phân từ giải thích, nối tiếp bằng động từ chính chia quá khứ đơn <span class="exp-highlight-green">shared with her...</span></span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">B, C, D</span> - sai đại từ quan hệ và cấu trúc câu.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 19 -->
+      <div class="question-card" data-qid="19" data-correct="D">
+        <div class="question-header"><span class="question-num">Câu 19</span><span class="question-type-badge">Rút gọn mệnh đề cùng chủ ngữ</span></div>
+        <div class="question-content">Question 19. Knowing how important these activities were, (19) ________.</div>
+        <div class="options-grid">
+          <button class="option-btn" data-key="A" onclick="selectAns(19,'A')"><span class="option-key">A</span><span>Mrs. Lan was more open and honest before her efforts to understand the conversation</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(19,'B')"><span class="option-key">B</span><span>efforts to understand her children have encouraged more open communication</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(19,'C')"><span class="option-key">C</span><span>Mrs. Lan's children tried to have more open conversations before she understood them</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(19,'D')"><span class="option-key">D</span><span>Mrs. Lan encouraged open talks, something that rarely happened before she tried</span></button>
+        </div>
+        <div class="explanation-box" id="exp-19">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Hiểu được những hoạt động này quan trọng như thế nào, cô Lan đã khuyến khích những cuộc trò chuyện cởi mở, điều hiếm khi xảy ra trước khi cô nỗ lực tìm hiểu.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">Câu A</span><span class="badge-pill badge-wrong">ngược nghĩa before</span><span class="analysis-meaning">= cởi mở trước khi nỗ lực là sai</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu B</span><span class="badge-pill badge-wrong">khác chủ ngữ</span><span class="analysis-meaning">= 'efforts' không thể thực hiện hành động 'Knowing'</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu C</span><span class="badge-pill badge-wrong">sai chủ ngữ & nghĩa</span><span class="analysis-meaning">= người 'Knowing' là Mrs. Lan chứ không phải các con</span></div>
+            <div class="analysis-card"><span class="analysis-word green">Câu D</span><span class="badge-pill badge-correct">đồng chủ ngữ chuẩn</span><span class="analysis-meaning">= Chủ ngữ Mrs. Lan khớp hoàn toàn với phân từ 'Knowing...'</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Participle Clause:</span><span>Mệnh đề đầu rút gọn bằng V-ing ('Knowing...'), nên chủ ngữ ngay sau dấu phẩy phải là <span class="exp-highlight-green">Mrs. Lan</span> và hợp logic thời gian.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">A, B, C</span> - lỗi Dangling Participle hoặc ngược nghĩa thời gian.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 20 -->
+      <div class="question-card" data-qid="20" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 20</span><span class="question-type-badge">Hoàn thành câu kết đoạn</span></div>
+        <div class="question-content">Question 20. Although they still sometimes disagreed, Mrs. Lan's patience and effort to understand her children made a big difference. (20) ________.</div>
+        <div class="options-grid">
+          <button class="option-btn" data-key="A" onclick="selectAns(20,'A')"><span class="option-key">A</span><span>The generation gap, once seen as too hard to fix, can become smaller with empathy and communication — qualities that are very important in any family trying to adjust to a fast-changing world</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(20,'B')"><span class="option-key">B</span><span>Such efforts demonstrate that although disagreements still exist, understanding and open communication help families bridge the gap completely and try to adapt to a rapidly changing world</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(20,'C')"><span class="option-key">C</span><span>Generational differences have been significantly improved by important actions in imposing and guiding important directions that make families harmonious</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(20,'D')"><span class="option-key">D</span><span>The connection between generations, although sometimes conflicting, empathy and honest dialogue help increase misunderstandings between parents and children</span></button>
+        </div>
+        <div class="explanation-box" id="exp-20">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Khoảng cách thế hệ, từng được xem là quá khó để hàn gắn, có thể trở nên nhỏ hơn nhờ sự thấu cảm và giao tiếp — những phẩm chất rất quan trọng trong bất kỳ gia đình nào đang cố gắng thích nghi với một thế giới thay đổi nhanh chóng.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">Câu A</span><span class="badge-pill badge-correct">kết luận chuẩn</span><span class="analysis-meaning">= đúc kết trọn vẹn thông điệp bài viết</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu B</span><span class="badge-pill badge-wrong">lặp ý & tuyệt đối</span><span class="analysis-meaning">= lặp lại 'although disagreements...' và dùng 'completely'</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu C</span><span class="badge-pill badge-wrong">sai từ 'imposing'</span><span class="analysis-meaning">= imposing là áp đặt (trái với sự thấu hiểu)</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu D</span><span class="badge-pill badge-wrong">ngược nghĩa</span><span class="analysis-meaning">= increase misunderstandings (làm tăng hiểu lầm)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Sự mạch lạc toàn văn bản:</span><span>Câu A khái quát hóa bài học thu hẹp khoảng cách thế hệ (<span class="exp-highlight-green">can become smaller with empathy and communication</span>).</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">B, C, D</span> - lặp câu, dùng từ trái tinh thần bài viết hoặc ngược nghĩa.</div>
+        </div>
+      </div>
+
+      <!-- PHẦN 5: CÂU 21 - 28 -->
+      <div class="exercise-divider"><span>📘</span> <span>PART 5 (Questions 21 - 28): Read the following passage and mark the letter A, B, C, or D to indicate the best answer.</span></div>
+
+      <div class="passage-box">
+        <div class="passage-title">🥩 The Paleo Diet & Ancestral Eating 🥦</div>
+        Modern supermarkets give us many food choices. There are colorful fruits and vegetables, fresh fish and meat, and many kinds of bread, eggs, yogurt, and cheese. But at the same time, people in the modern world are experiencing health problems. Could the food we eat be causing some of <u>them</u>?<br><br>
+        One explanation for modern health problems is that they began when human beings became farmers about 12,000 years ago. Around that time, people started growing and eating crops, such as wheat and rice. <u>Some people believe that returning to an earlier way of eating might be a solution to our modern health problems.</u> One of the good examples is a “paleo diet” that includes only meat, fish, and fruits and vegetables.<br><br>
+        A paleo diet is special because it doesn't include grains, dairy foods, or legumes, such as peanuts or beans. People who follow a paleo diet only eat foods people ate before farming began and believe this is a more <u>natural</u> and healthier way to eat. For many of us, it is not possible to prepare our favorite dishes without these ingredients.<br><br>
+        For Dr. Peter Ungar, the truth is not so simple. In human history, people have eaten a wide variety of foods. Early human beings lived in different places with different climates, so many kinds of food were <u>available</u> to our ancestors even before farming began. Dr. Ungar says our ability to eat in many different ways and to be healthy, whether we live in the Arctic or in the tropics, is the important thing. One thing is certain, though: If you do decide to try a paleo diet, remember that your meals might actually have less variety than the meals of your early ancestors.
+      </div>
+
+      <!-- QUESTION 21 -->
+      <div class="question-card" data-qid="21" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 21</span><span class="question-type-badge">Tìm chi tiết (Scanning)</span></div>
+        <div class="question-content">Question 21. Which of the following is NOT mentioned in paragraph 1 as one of the food choices that modern supermarkets offer?</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(21,'A')"><span class="option-key">A</span><span>grains</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(21,'B')"><span class="option-key">B</span><span>vegetables</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(21,'C')"><span class="option-key">C</span><span>colorful fruits</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(21,'D')"><span class="option-key">D</span><span>fresh fish</span></button>
+        </div>
+        <div class="explanation-box" id="exp-21">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Thực phẩm nào sau đây KHÔNG được đề cập trong đoạn 1 như là một lựa chọn mà siêu thị hiện đại cung cấp?</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">grains</span><span class="badge-pill badge-correct">không nêu ở đoạn 1</span><span class="analysis-meaning">= ngũ cốc (chỉ xuất hiện ở đoạn 3)</span></div>
+            <div class="analysis-card"><span class="analysis-word">vegetables</span><span class="badge-pill badge-structure">có ở đoạn 1</span><span class="analysis-meaning">= rau củ</span></div>
+            <div class="analysis-card"><span class="analysis-word">colorful fruits</span><span class="badge-pill badge-structure">có ở đoạn 1</span><span class="analysis-meaning">= trái cây nhiều màu sắc</span></div>
+            <div class="analysis-card"><span class="analysis-word">fresh fish</span><span class="badge-pill badge-structure">có ở đoạn 1</span><span class="analysis-meaning">= cá tươi</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Đối chiếu đoạn 1:</span><span>Đoạn 1 chỉ nêu 'colorful fruits and vegetables, fresh fish and meat, bread, eggs, yogurt, and cheese', không nhắc đến <span class="exp-highlight-green">grains</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">B, C, D</span> - đều có mặt trong câu thứ 2 của đoạn 1.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 22 -->
+      <div class="question-card" data-qid="22" data-correct="B">
+        <div class="question-header"><span class="question-num">Câu 22</span><span class="question-type-badge">Quy chiếu (Reference)</span></div>
+        <div class="question-content">Question 22. The word “<u>them</u>” in paragraph 1 refers to ________.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(22,'A')"><span class="option-key">A</span><span>supermarkets</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(22,'B')"><span class="option-key">B</span><span>health problems</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(22,'C')"><span class="option-key">C</span><span>people</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(22,'D')"><span class="option-key">D</span><span>many kinds</span></button>
+        </div>
+        <div class="explanation-box" id="exp-22">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Từ “them” ở đoạn 1 quy chiếu đến cụm từ “health problems” (các vấn đề sức khỏe).</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">supermarkets</span><span class="badge-pill badge-wrong">sai nghĩa</span><span class="analysis-meaning">= các siêu thị</span></div>
+            <div class="analysis-card"><span class="analysis-word green">health problems</span><span class="badge-pill badge-correct">quy chiếu chuẩn</span><span class="analysis-meaning">= các vấn đề sức khỏe</span></div>
+            <div class="analysis-card"><span class="analysis-word">people</span><span class="badge-pill badge-wrong">sai nghĩa</span><span class="analysis-meaning">= con người</span></div>
+            <div class="analysis-card"><span class="analysis-word">many kinds</span><span class="badge-pill badge-wrong">sai nghĩa</span><span class="analysis-meaning">= nhiều loại</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Liên kết câu trước:</span><span>'...people in the modern world are experiencing <span class="exp-highlight-green">health problems</span>. Could the food we eat be causing some of <span class="exp-highlight-green">them</span>?'</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">A, C, D</span> - không hợp nghĩa với động từ 'causing' (gây ra).</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 23 -->
+      <div class="question-card" data-qid="23" data-correct="A">
+        <div class="question-header"><span class="question-num">Câu 23</span><span class="question-type-badge">Diễn giải câu (Paraphrasing)</span></div>
+        <div class="question-content">Question 23. Which of the following best paraphrases the underlined sentence in paragraph 2?<br><u>Some people believe that returning to an earlier way of eating might be a solution to our modern health problems.</u></div>
+        <div class="options-grid">
+          <button class="option-btn" data-key="A" onclick="selectAns(23,'A')"><span class="option-key">A</span><span>Some people think that eating the way people ate long ago may help fix today's health issues.</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(23,'B')"><span class="option-key">B</span><span>Several individuals think eating food from long ago won't help improve today's health problems.</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(23,'C')"><span class="option-key">C</span><span>Many say modern health issues are too serious to solve with old-fashioned eating habits.</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(23,'D')"><span class="option-key">D</span><span>Some believe changing modern diets is better than copying how people used to eat in the past.</span></button>
+        </div>
+        <div class="explanation-box" id="exp-23">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Một số người tin rằng việc quay lại cách ăn uống thời xưa có thể là giải pháp cho các vấn đề sức khỏe hiện đại của chúng ta.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word green">Câu A</span><span class="badge-pill badge-correct">đồng nghĩa 100%</span><span class="analysis-meaning">= eating the way people ate long ago may help fix today's health issues</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu B</span><span class="badge-pill badge-wrong">ngược nghĩa won't</span><span class="analysis-meaning">= nói rằng sẽ không giúp cải thiện</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu C</span><span class="badge-pill badge-wrong">sai ý too serious</span><span class="analysis-meaning">= quá nghiêm trọng không giải quyết được</span></div>
+            <div class="analysis-card"><span class="analysis-word">Câu D</span><span class="badge-pill badge-wrong">ngược ý</span><span class="analysis-meaning">= phản đối việc ăn theo cách xưa</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Tương đương cấu trúc:</span><span><span class="exp-highlight-green">earlier way of eating = the way people ate long ago</span>; <span class="exp-highlight-green">might be a solution = may help fix</span>; <span class="exp-highlight-green">modern health problems = today's health issues</span>.</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">B, C, D</span> - làm sai lệch thông điệp câu gốc.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 24 -->
+      <div class="question-card" data-qid="24" data-correct="D">
+        <div class="question-header"><span class="question-num">Câu 24</span><span class="question-type-badge">Từ trái nghĩa (Antonyms)</span></div>
+        <div class="question-content">Question 24. The word “<u>natural</u>” in paragraph 3 is OPPOSITE in meaning to ________.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(24,'A')"><span class="option-key">A</span><span>normal</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(24,'B')"><span class="option-key">B</span><span>rare</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(24,'C')"><span class="option-key">C</span><span>common</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(24,'D')"><span class="option-key">D</span><span>artificial</span></button>
+        </div>
+        <div class="explanation-box" id="exp-24">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Từ “natural” (tự nhiên) ở đoạn 3 TRÁI NGHĨA với từ “artificial” (nhân tạo).</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">normal</span><span class="badge-pill badge-structure">bình thường</span><span class="analysis-meaning">= bình thường</span></div>
+            <div class="analysis-card"><span class="analysis-word">rare</span><span class="badge-pill badge-structure">hiếm</span><span class="analysis-meaning">= hiếm có</span></div>
+            <div class="analysis-card"><span class="analysis-word">common</span><span class="badge-pill badge-structure">phổ biến</span><span class="analysis-meaning">= thông thường</span></div>
+            <div class="analysis-card"><span class="analysis-word green">artificial</span><span class="badge-pill badge-correct">trái nghĩa chuẩn</span><span class="analysis-meaning">= nhân tạo (<> natural tự nhiên)</span></div>
+          </div>
+          <div class="exp-rule-row"><span class="check-label">2. ✅ TẠI SAO ĐÚNG?</span><span class="exp-rule-pill">Tự nhiên <> Nhân tạo:</span><span><span class="exp-highlight-green">natural</span> (tự nhiên) trái nghĩa với <span class="exp-highlight-green">artificial</span> (nhân tạo).</span></div>
+          <div class="exp-wrong-row"><span class="cross-label">3. ❌ TẠI SAO SAI?</span><span class="exp-wrong-tag">normal / rare / common</span> - không đối lập nghĩa với natural.</div>
+        </div>
+      </div>
+
+      <!-- QUESTION 25 -->
+      <div class="question-card" data-qid="25" data-correct="C">
+        <div class="question-header"><span class="question-num">Câu 25</span><span class="question-type-badge">Từ đồng nghĩa (Synonyms)</span></div>
+        <div class="question-content">Question 25. The word “<u>available</u>” in paragraph 4 is CLOSEST in meaning to ________.</div>
+        <div class="options-grid two-cols">
+          <button class="option-btn" data-key="A" onclick="selectAns(25,'A')"><span class="option-key">A</span><span>respectable</span></button>
+          <button class="option-btn" data-key="B" onclick="selectAns(25,'B')"><span class="option-key">B</span><span>occupied</span></button>
+          <button class="option-btn" data-key="C" onclick="selectAns(25,'C')"><span class="option-key">C</span><span>obtainable</span></button>
+          <button class="option-btn" data-key="D" onclick="selectAns(25,'D')"><span class="option-key">D</span><span>predictable</span></button>
+        </div>
+        <div class="explanation-box" id="exp-25">
+          <div class="exp-title">⚡ GIẢI THÍCH CHI TIẾT</div>
+          <div class="exp-translation-bubble"><span>💭</span><span><strong>Dịch:</strong> Từ “available” (có sẵn, có thể kiếm được) ở đoạn 4 GẦN NGHĨA NHẤT với từ “obtainable”.</span></div>
+          <div class="exp-section-title">1. Phân tích 4 đáp án:</div>
+          <div class="analysis-grid">
+            <div class="analysis-card"><span class="analysis-word">respectable</span><span class="badge-pill badge-structure">đáng kính</span><span class="analysis-meaning">= đáng kính trọng</span></div>
+            <div class="analysis-card"><span class="analysis-word">occupied</span><span class="badge-pill badge-wrong">đang bận</span><span class="analysis-meaning">= bị chiếm chỗ
